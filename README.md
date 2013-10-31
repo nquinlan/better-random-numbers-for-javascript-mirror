@@ -2,6 +2,7 @@
 
 _Note: This is a direct mirror of Johannes Baagøe's wiki on implementations of Randomness in Javascript. [Mr. Baagøe's site](http://baagoe.org/) has largely disappeared from the internet this is a faithful reproduction of it from [Archive.org](https://web.archive.org/web/20120124013936/http://baagoe.org/en/wiki/Better_random_numbers_for_javascript) and other sources. The content is Licensed [Creative Commons Attribution Share Alike](http://creativecommons.org/licenses/by-sa/3.0/)._
 
+<http://baagoe.org/en/wiki/Better_random_numbers_for_javascript>
 
 ECMAScript<a name="cite_ref-0"></a><sup>[[1]](#cite_note-0)</sup> provides a standard function, `Math.random`, which according to the specifications ([ECMA-262, 3rd edition](http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm), 15.8.2.14) "returns a number value with positive sign, greater than or
 equal to 0 but less than 1, chosen randomly or pseudo randomly with approximately uniform distribution over that range, using an implementation-dependent algorithm or strategy. This function takes no arguments."
