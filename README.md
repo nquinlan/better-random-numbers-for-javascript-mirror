@@ -3,7 +3,7 @@
 _Note: This is a direct mirror of Johannes Baagøe's wiki on implementations of Randomness in Javascript. [Mr. Baagøe's site](http://baagoe.org/) has largely disappeared from the internet this is a faithful reproduction of it from [Archive.org](https://web.archive.org/web/20120124013936/http://baagoe.org/en/wiki/Better_random_numbers_for_javascript) and other sources. The content is Licensed [Creative Commons Attribution Share Alike](http://creativecommons.org/licenses/by-sa/3.0/)._
 
 
-ECMAScript<a name="#cite_ref-0"></a><sup>[[1]](#cite_note-0)</sup> provides a standard function, `Math.random`, which according to the specifications ([ECMA-262, 3rd edition](http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm), 15.8.2.14) "returns a number value with positive sign, greater than or
+ECMAScript<a name="cite_ref-0"></a><sup>[[1]](#cite_note-0)</sup> provides a standard function, `Math.random`, which according to the specifications ([ECMA-262, 3rd edition](http://www.ecma-international.org/publications/standards/Ecma-262-arch.htm), 15.8.2.14) "returns a number value with positive sign, greater than or
 equal to 0 but less than 1, chosen randomly or pseudo randomly with approximately uniform distribution over that range, using an implementation-dependent algorithm or strategy. This function takes no arguments."
 
 This is good enough for its intended use, viz., to provide an easy way for script authors to write cute animations, games, etc. However, if you want to use it for more serious programming, there are several problems.
@@ -11,35 +11,35 @@ This is good enough for its intended use, viz., to provide an easy way for scrip
 Contents
 --------
 
--   [1 Why Math.random should not be used for serious programming](#Why_Math.random_should_not_be_used_for_serious_programming)
-    -   [1.1 No guarantee of quality](#No_guarantee_of_quality)
-    -   [1.2 No standard way to repeat sequences](#No_standard_way_to_repeat_sequences)
-    -   [1.3 Security](#Security)
+-   [1 Why Math.random should not be used for serious programming](#why-mathrandom-should-not-be-used-for-serious-programming)
+    -   [1.1 No guarantee of quality](#no-guarantee-of-quality)
+    -   [1.2 No standard way to repeat sequences](#no-standard-way-to-repeat-sequences)
+    -   [1.3 Security](#security)
 
--   [2 Why it is difficult to write good PRNGs in javascript](#Why_it_is_difficult_to_write_good_PRNGs_in_javascript)
-    -   [2.1 Only 53 significant bits in multiplications](#Only_53_significant_bits_in_multiplications)
-    -   [2.2 Limited and inefficient bit operations](#Limited_and_inefficient_bit_operations)
+-   [2 Why it is difficult to write good PRNGs in javascript](#why-it-is-difficult-to-write-good-prngs-in-javascript)
+    -   [2.1 Only 53 significant bits in multiplications](#only-53-significant-bits-in-multiplications)
+    -   [2.2 Limited and inefficient bit operations](#limited-and-inefficient-bit-operations)
 
--   [3 A collection of better PRNGs](#A_collection_of_better_PRNGs)
-    -   [3.1 Common interface](#Common_interface)
-        -   [3.1.1 Simple usage](#Simple_usage)
-        -   [3.1.2 Using methods and properties](#Using_methods_and_properties)
+-   [3 A collection of better PRNGs](#a-collection-of-better-prngs)
+    -   [3.1 Common interface](#common-interface)
+        -   [3.1.1 Simple usage](#simple-usage)
+        -   [3.1.2 Using methods and properties](#using-methods-and-properties)
 
-    -   [3.2 Common implementation details](#Common_implementation_details)
-        -   [3.2.1 Mash](#Mash)
-        -   [3.2.2 At least two random functions, not just one](#At_least_two_random_functions.2C_not_just_one)
+    -   [3.2 Common implementation details](#common-implementation-details)
+        -   [3.2.1 Mash](#mash)
+        -   [3.2.2 At least two random functions, not just one](#at-least-two-random-functions-not-just-one)
 
-    -   [3.3 The generators](#The_generators)
-        -   [3.3.1 MRG32k3a](#MRG32k3a)
-        -   [3.3.2 Xorshift03](#Xorshift03)
-        -   [3.3.3 KISS07](#KISS07)
-        -   [3.3.4 LFib](#LFib)
-        -   [3.3.5 LFIB4](#LFIB4)
-        -   [3.3.6 Alea](#Alea)
-        -   [3.3.7 Kybos](#Kybos)
+    -   [3.3 The generators](#the-generators)
+        -   [3.3.1 MRG32k3a](#mrg32k3a)
+        -   [3.3.2 Xorshift03](#xorshift03)
+        -   [3.3.3 KISS07](#kiss07)
+        -   [3.3.4 LFib](#lfib)
+        -   [3.3.5 LFIB4](#lfib4)
+        -   [3.3.6 Alea](#alea)
+        -   [3.3.7 Kybos](#kybos)
 
--   [4 License](#License)
--   [5 Notes](#Notes)
+-   [4 License](#license)
+-   [5 Notes](#notes)
 
 Why `Math.random` should not be used for serious programming
 ------------------------------------------------------------
@@ -60,7 +60,7 @@ also means that you cannot give your code to a colleague and expect that she wil
 
 On the other hand, the weakness of many implementations mean that a sequence of outputs of `Math.random` can often be predicted, even when
 the intent was that it could not. This may present security risks. `Math.random` should never be used to generate separators in POST
-requests<a name="#cite_ref-1"></a><sup>[[2]](#cite_note-1)</sup>, [Version 4 UUIDs](http://en.wikipedia.org/wiki/Universally_Unique_Identifier), [session keys](http://en.wikipedia.org/wiki/Session_key), etc.
+requests<a name="cite_ref-1"></a><sup>[[2]](#cite_note-1)</sup>, [Version 4 UUIDs](http://en.wikipedia.org/wiki/Universally_Unique_Identifier), [session keys](http://en.wikipedia.org/wiki/Session_key), etc.
 
 If one wants to do things like that in javascript, `Math.random` is simply not good enough.
 
@@ -124,7 +124,7 @@ Example
 
 Any implementation of ECMAScript should yield exactly those values.
 
-The internal state of random, and hence the sequence of pseudo-random numbers it returns, is determined by the arguments to `Alea`. Two functions returned by calls to `Alea` with the same argument values will return exactly the same sequence of pseudo-random numbers. String and Number arguments should provide repeatable output across platforms. Object arguments<a name="#cite_ref-2"></a><sup>[[3]](#cite_note-2)</sup> provide repeatable output on the same platform, but not necessarily on others.
+The internal state of random, and hence the sequence of pseudo-random numbers it returns, is determined by the arguments to `Alea`. Two functions returned by calls to `Alea` with the same argument values will return exactly the same sequence of pseudo-random numbers. String and Number arguments should provide repeatable output across platforms. Object arguments<a name="cite_ref-2"></a><sup>[[3]](#cite_note-2)</sup> provide repeatable output on the same platform, but not necessarily on others.
 
 If you call `Alea()`, that is, with no arguments, a single argument of `+new Date()` is silently assumed. This provides an easy means to provide somewhat unpredictable numbers, like `Math.random` does.
 
@@ -163,7 +163,7 @@ Example:
 
 Any implementation of ECMAScript should yield exactly those values.
 
-To obtain an integer in [0, n[, one may simply take the remainder modulo n<a name="#cite_ref-3"></a><sup>[[4]](#cite_note-3)</sup>. With some generators, this is faster than using the default function in `Math.floor(random() * n)` or its clever variants, `random() * n | 0` and `random() * n >>> 0`
+To obtain an integer in [0, n[, one may simply take the remainder modulo n<a name="cite_ref-3"></a><sup>[[4]](#cite_note-3)</sup>. With some generators, this is faster than using the default function in `Math.floor(random() * n)` or its clever variants, `random() * n | 0` and `random() * n >>> 0`
 
 `fract53` is a function that takes no arguments and returns a 53-bit fraction in [0, 1[. It is usually slower than the main function, though.
 
@@ -237,7 +237,7 @@ In `Alea` and `Kybos`, the main PRNG algorithm provides 32-bit fractions. Both `
 
 [Javascript](support/js/MRG32k3a.js) | [C](support/c/MRG32k3a.c)
 
-One of [Pierre L'Ecuyer](http://www.iro.umontreal.ca/~lecuyer/)'s Combined Multiple Recursive<a name="#cite_ref-4"></a><sup>[[5]](#cite_note-4)</sup> PRNGs. It is remarkable for its ingenious use of 53-bit integer arithmetic (originally implemented in C doubles) which makes it very suitable for javascript, as well as for the are in the choice of multipliers and moduli. The period is about 2<sup>191</sup>, and it passes - of course - L'Ecuyers own [TestU01](http://www.iro.montreal.ca/~simardr/testu01/tu01.html) BigCrush battery of tests. (The [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_twister) fails Crush.)
+One of [Pierre L'Ecuyer](http://www.iro.umontreal.ca/~lecuyer/)'s Combined Multiple Recursive<a name="cite_ref-4"></a><sup>[[5]](#cite_note-4)</sup> PRNGs. It is remarkable for its ingenious use of 53-bit integer arithmetic (originally implemented in C doubles) which makes it very suitable for javascript, as well as for the are in the choice of multipliers and moduli. The period is about 2<sup>191</sup>, and it passes - of course - L'Ecuyers own [TestU01](http://www.iro.montreal.ca/~simardr/testu01/tu01.html) BigCrush battery of tests. (The [Mersenne Twister](http://en.wikipedia.org/wiki/Mersenne_twister) fails Crush.)
 
 This is surely the most reputable of all the generators presented here. It has been quite extensively tested and it is widely used. It is copyrighted but free for non-commercial uses. Commercial users must request written permission from Professor L'Ecuyer.
 
@@ -264,7 +264,7 @@ Its xorshift component makes it rather slow, though. It remains a very attractiv
 [Javascript](support/js/LFib.js) | [C](support/c/LFib.c)
 
 This is a L(2<sup>53</sup>, 255, 52, -) [lagged Fibonacci](http://en.wikipedia.org/wiki/Lagged_Fibonacci_generator)
-generator<a name="#cite_ref-5"></a><sup>[[6]](#cite_note-5)</sup>. The period is very close to 2<sup>307</sup>.
+generator<a name="cite_ref-5"></a><sup>[[6]](#cite_note-5)</sup>. The period is very close to 2<sup>307</sup>.
 
 It uses subtraction modulo 1 instead of addition in order to retain full 53-bit precision. (One cannot add two 53-bit fractions in [0, 1[ in IEEE
 double precision without risking the loss of a bit to overflow. One can subtract them, though, and add 1 if the result is negative - the sign flag serves as a temporary 54-th bit.)
@@ -302,7 +302,7 @@ I therefore propose them as the PRNGs of choice in javascript. I must however co
 All the generators presented so far have quite well-defined mathematical properties which have been extensively studied. This gives good reasons to consider them satisfactory, but it also raises a suspicion - aren't they **too** well-behaved? Isn't their elegant mathematical structure by itself a sign that they are not *random*? Except possibly for `KISS07` which combines three quite different ideas, they could be victims of the
 Mersenne Twister syndrome - a theoretically wonderful algorithm, with actual proofs of good distribution in all dimensions up to a large number and a huge period, which turns out to fail tests that other, less sophisticated but more robust generators pass easily.
 
-`Kybos`<a name="#cite_ref-6"></a><sup>[[7]](#cite_note-6)</sup> combines `Alea` with a variant of the Bays-Durham shuffle), using the ultimate non linear tool: table lookup. The original shuffle rarely improves PRNGs in a noticeable way, but the variant used here, in which the "random" numbers in the lookup table are incremented by those from the original generator instead of being replaced, makes some terrible generators pass very stringent tests.
+`Kybos`<a name="cite_ref-6"></a><sup>[[7]](#cite_note-6)</sup> combines `Alea` with a variant of the Bays-Durham shuffle), using the ultimate non linear tool: table lookup. The original shuffle rarely improves PRNGs in a noticeable way, but the variant used here, in which the "random" numbers in the lookup table are incremented by those from the original generator instead of being replaced, makes some terrible generators pass very stringent tests.
 
 The problem is that one cannot say much about the period or other aspects of the resulting numbers. Which may be what one would expect of
 anything that is indeed random, but it doesn't make mathematicians happy.
