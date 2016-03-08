@@ -12,7 +12,7 @@
     // Browser globals (root is window)
     root.MRG32k3a = factory(root.Mash);
   }
-}(this, function () {
+}(this, function (Mash) {
   function MRG32k3a() {
     return (function(args) {
       // Copyright (c) 1998, 2002 Pierre L'Ecuyer, DIRO, Université de Montréal.

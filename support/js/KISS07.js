@@ -12,7 +12,7 @@
     // Browser globals (root is window)
     root.KISS07 = factory(root.Mash);
   }
-}(this, function () {
+}(this, function (Mash) {
   function KISS07() {
     return (function(args) {
       // George Marsaglia, 2007-06-23

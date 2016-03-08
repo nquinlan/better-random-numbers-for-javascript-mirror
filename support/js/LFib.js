@@ -12,7 +12,7 @@
     // Browser globals (root is window)
     root.LFib = factory(root.Mash);
   }
-}(this, function () {
+}(this, function (Mash) {
   function LFib() {
     return (function(args) {
       // Johannes Baagøe <baagoe@baagoe.com>, 2010

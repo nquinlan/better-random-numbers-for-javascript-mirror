@@ -12,7 +12,7 @@
     // Browser globals (root is window)
     root.LFIB4 = factory(root.Mash);
   }
-}(this, function () {
+}(this, function (Mash) {
   function LFIB4() {
     return(function(args) {
       // George Marsaglia's LFIB4,

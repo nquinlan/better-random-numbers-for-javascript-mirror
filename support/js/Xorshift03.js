@@ -12,7 +12,7 @@
     // Browser globals (root is window)
     root.Xorshift03 = factory(root.Mash);
   }
-}(this, function () {
+}(this, function (Mash) {
   function Xorshift03() {
     return (function(args) {
       // George Marsaglia, 13 May 2003

@@ -12,7 +12,7 @@
     // Browser globals (root is window)
     root.Alea = factory(root.Mash);
   }
-}(this, function () {
+}(this, function (Mash) {
   function Alea() {
     return (function(args) {
       // Johannes Baagøe <baagoe@baagoe.com>, 2010
